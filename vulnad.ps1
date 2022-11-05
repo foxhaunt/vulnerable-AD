@@ -213,6 +213,7 @@ function VulnAD-DCSync {
         $generated_password = ([System.Web.Security.Membership]::GeneratePassword(12,2))
         Set-AdAccountPassword -Identity $randomuser -Reset -NewPassword (ConvertTo-SecureString $generated_password -AsPlainText -Force)
         Write-Info "Adding IT Admins to : $randomuser"
+    }
 }
 function VulnAD-DisableSMBSigning {
     Set-SmbClientConfiguration -RequireSecuritySignature 0 -EnableSecuritySignature 0 -Confirm -Force
