@@ -231,6 +231,7 @@ function Invoke-VulnAD {
     Set-ADDefaultDomainPasswordPolicy -Identity $Global:Domain -LockoutDuration 00:01:00 -LockoutObservationWindow 00:01:00 -ComplexityEnabled $false -ReversibleEncryptionEnabled $False -MinPasswordLength 4
     VulnAD-AddADUser -limit $UsersLimit
     Write-Good "Users Created"
+    Try { New-ADUser -Name "Pepe Gotera" -GivenName "Pepe" -Surname "Gotera" -SamAccountName "pepe.gotera" -UserPrincipalName "pepe.gotera"@$Global:Domain -AccountPassword (ConvertTo-SecureString "tacita2018" -AsPlainText -Force) -PassThru | Enable-ADAccount } Catch {}
     VulnAD-AddADGroup -GroupList $Global:HighGroups
     Write-Good "$Global:HighGroups Groups Created"
     VulnAD-AddADGroup -GroupList $Global:MidGroups
