@@ -189,7 +189,7 @@ function VulnAD-PasswordSpraying {
     }
 }
 function VulnAD-DCSync {
-    for ($i=1; $i -le (Get-Random -Minimum 3 -Maximum 6); $i=$i+1 ) {
+    for ($i=1; $i -le (Get-Random -Minimum 1 -Maximum 2); $i=$i+1 ) {
         $ADObject = [ADSI]("LDAP://" + (Get-ADDomain $Global:Domain).DistinguishedName)
         $randomuser = (VulnAD-GetRandom -InputList $Global:CreatedUsers)
         $sid = (Get-ADUser -Identity $randomuser).sid
