@@ -205,7 +205,7 @@ function VulnAD-DefaultPassword {
     }
 }
 function VulnAD-PasswordSpraying {
-    $same_password = "Winter2022";
+    $same_password = "Septiembre2023!";
     for ($i=1; $i -le (Get-Random -Minimum 1 -Maximum 2); $i=$i+1 ) {
         $randomuser = (VulnAD-GetRandom -InputList $Global:CreatedUsers)
         Set-AdAccountPassword -Identity $randomuser -Reset -NewPassword (ConvertTo-SecureString $same_password -AsPlainText -Force)
