@@ -133,17 +133,14 @@ function VulnAD-BadAcls {
         Write-Info "BadACL $abuse $randomuser and $randomgroup"
     }
     #ACL from UsersFootHold to NormalGroups
-    #for ($i=1; $i -le (Get-Random -Minimum 1 -Maximum 1); $i=$i+1 ) {
-        #$abuse = (VulnAD-GetRandom -InputList $Global:BadACL);
+    for ($i=1; $i -le (Get-Random -Minimum 1 -Maximum 2); $i=$i+1 ) {
+        $abuse = (VulnAD-GetRandom -InputList $Global:BadACL);
         $randomuser = VulnAD-GetRandom -InputList $Global:UsersFootHold
         $user = Get-ADUser -Identity $randomuser
         $randomgroup = VulnAD-GetRandom -InputList $Global:NormalGroups
-        $group = Get-ADGroup -Identity $randomgroup
-        #VulnAD-AddACL -Source $user.sid -Destination $group.DistinguishedName -Rights $abuse
-        Write-Info "Adding $randomuser to $group"
-        Try { Add-ADGroupMember -Identity $group -Members $randomuser } Catch {}
-        #Write-Info "BadACL UsersFootHold $Abuse $randomuser and $randomgroup"
-    #}
+        VulnAD-AddACL -Source $user.sid -Destination $randomgroup.DistinguishedName -Rights $abuse
+        Write-Info "BadACL UsersFootHold $Abuse $randomuser and $randomgroup"
+    }
 }
 function VulnAD-Kerberoasting {
     $selected_service = (VulnAD-GetRandom -InputList $Global:ServicesAccountsAndSPNs)
@@ -199,7 +196,7 @@ function VulnAD-DefaultPassword {
     for ($i=1; $i -le (Get-Random -Minimum 2 -Maximum 5); $i=$i+1 ) {
         $randomuser = (VulnAD-GetRandom -InputList $Global:CreatedUsers)
         $password = "Changeme123!";
-	Set-AdAccountPassword -Identity $randomuser -Reset -NewPassword (ConvertTo-SecureString $password -AsPlainText -Force)
+        Set-AdAccountPassword -Identity $randomuser -Reset -NewPassword (ConvertTo-SecureString $password -AsPlainText -Force)
         Set-ADUser $randomuser -Description "New User ,DefaultPassword"
         Set-AdUser $randomuser -ChangePasswordAtLogon $true
         Try {[void]$Global:UsersFootHold.Add($randomuser)} Catch {}
@@ -208,7 +205,7 @@ function VulnAD-DefaultPassword {
     }
 }
 function VulnAD-PasswordSpraying {
-    $same_password = "Diciembre2024!";
+    $same_password = "Septiembre2023!";
     for ($i=1; $i -le (Get-Random -Minimum 1 -Maximum 2); $i=$i+1 ) {
         $randomuser = (VulnAD-GetRandom -InputList $Global:CreatedUsers)
         Set-AdAccountPassword -Identity $randomuser -Reset -NewPassword (ConvertTo-SecureString $same_password -AsPlainText -Force)
@@ -274,10 +271,10 @@ function Invoke-VulnAD {
     Write-Good "$Global:MidGroups Groups Created"
     VulnAD-AddADGroup -GroupList $Global:NormalGroups
     Write-Good "$Global:NormalGroups Groups Created"
-    #VulnAD-PwdInObjectDescription
-    #Write-Good "Password In Object Description Done"
-    #VulnAD-ASREPRoasting
-    #Write-Good "AS-REPRoasting Done"
+    VulnAD-PwdInObjectDescription
+    Write-Good "Password In Object Description Done"
+    VulnAD-ASREPRoasting
+    Write-Good "AS-REPRoasting Done"
     VulnAD-PasswordSpraying
     Write-Good "Password Spraying Done"
     VulnAD-BadAcls
